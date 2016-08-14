@@ -51,6 +51,8 @@ struct LunationNumber {
 typealias MoonCompletion = (phase: MoonPhase) -> Void
 
 class RequestHandler: NSObject {
+    var apiKey: String?
+    
     func requestMoonPhase(forDate: NSDate, completion: MoonCompletion) {
         
     }

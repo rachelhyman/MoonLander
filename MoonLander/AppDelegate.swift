@@ -15,7 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        guard let key = retrieveAPIKey() else {
+            print("could not retrieve api key")
+            return true
+        }
+        if let window = self.window {
+            let rootVC = window.rootViewController as? ViewController
+            let requestHandler = RequestHandler()
+            requestHandler.apiKey = key
+            rootVC?.requestHandler = requestHandler
+        }
+        
         return true
     }
 
@@ -40,7 +50,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
+    
+    func retrieveAPIKey() -> String? {
+        guard let url = NSBundle.mainBundle().URLForResource("credentials", withExtension: "json") else {
+            print("credentials json not found")
+            return nil
+        }
+        guard let data = NSData(contentsOfURL: url) else {
+            print("error initializing data from file url")
+            return nil
+        }
+        do {
+            let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+            if let key = json["FORECAST_API_KEY"] as? String {
+                return key
+            }
+            
+        } catch {
+            print("json serialization error: \(error)")
+        }
+        return nil
+    }
 }
 

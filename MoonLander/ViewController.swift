@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var requestHandler: RequestHandler?
 
     @IBOutlet weak var moonLabel: UILabel!
     
