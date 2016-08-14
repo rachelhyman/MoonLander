@@ -12,6 +12,7 @@
 		CC290D1A1D610A180026E9F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC290D181D610A180026E9F9 /* Main.storyboard */; };
 		CC290D1C1D610A180026E9F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC290D1B1D610A180026E9F9 /* Assets.xcassets */; };
 		CC290D1F1D610A180026E9F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC290D1D1D610A180026E9F9 /* LaunchScreen.storyboard */; };
+		CC290D291D6111420026E9F9 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC290D281D6111420026E9F9 /* RequestHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		CC290D1B1D610A180026E9F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC290D1E1D610A180026E9F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC290D201D610A180026E9F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC290D281D6111420026E9F9 /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				CC290D141D610A180026E9F9 /* AppDelegate.swift */,
+				CC290D281D6111420026E9F9 /* RequestHandler.swift */,
 				CC290D161D610A180026E9F9 /* ViewController.swift */,
 				CC290D181D610A180026E9F9 /* Main.storyboard */,
 				CC290D1B1D610A180026E9F9 /* Assets.xcassets */,
@@ -137,6 +140,7 @@
 			files = (
 				CC290D171D610A180026E9F9 /* ViewController.swift in Sources */,
 				CC290D151D610A180026E9F9 /* AppDelegate.swift in Sources */,
+				CC290D291D6111420026E9F9 /* RequestHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
