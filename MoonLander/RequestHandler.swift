@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 enum MoonPhase {
     case New
@@ -52,8 +53,43 @@ typealias MoonCompletion = (phase: MoonPhase) -> Void
 
 class RequestHandler: NSObject {
     var apiKey: String?
+    let locationManager = CLLocationManager()
+    static var dateFormatter: NSDateFormatter {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-DDThh:mm:ss"
+        return dateFormatter
+    }
+    
+    override init() {
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+    }
+    
+    func locationPermissionsGiven() -> Bool {
+        return CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse
+    }
     
     func requestMoonPhase(forDate: NSDate, completion: MoonCompletion) {
+        guard let key = apiKey else { return }
+        if !locationPermissionsGiven() {
+            return
+        }
+        guard let loc = locationManager.location else { return }
+        let locationString = "\(loc.coordinate.latitude),\(loc.coordinate.longitude)"
+        let urlString = "https://api.forecast.io/forecast/\(key)/\(locationString),2016-08-16T12:00:00"
+        guard let url = NSURL(string: urlString) else { return }
         
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithURL(url) {
+            (optionalData, response, error) -> Void in
+            guard let data = optionalData else { return }
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+                print(json)
+            } catch {
+                
+            }
+            
+        }
+        task.resume()
     }
 }
