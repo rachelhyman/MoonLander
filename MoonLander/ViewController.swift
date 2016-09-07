@@ -12,13 +12,27 @@ import CoreLocation
 class ViewController: UIViewController, CLLocationManagerDelegate {
     var requestHandler: RequestHandler?
     
-    @IBOutlet weak var datePicker: UIDatePicker!
+    lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .Date
+        return datePicker
+    }()
+    @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var moonLabel: UILabel!
+    static var dateFormatter: NSDateFormatter {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+        return dateFormatter
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         requestHandler?.locationManager.delegate = self
+        dateTextField.text = ViewController.dateFormatter.stringFromDate(NSDate())
+ 
+        datePicker.addTarget(self, action: #selector(didChangeDatePicker), forControlEvents: .ValueChanged)
+        dateTextField.inputView = datePicker
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -30,12 +44,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    @IBAction func didTapButton(sender: AnyObject) {
+    func didChangeDatePicker() {
+        dateTextField.text = ViewController.dateFormatter.stringFromDate(datePicker.date)
         requestMoonPhase(for: datePicker.date)
     }
     
+    @IBAction func didTapButton(sender: AnyObject) {
+//        requestMoonPhase(for: datePicker.date)
+    }
+    
     func requestMoonPhase(for date: NSDate) {
-        requestHandler?.requestMoonPhase(date, completion: { (phase) in
+        requestHandler?.requestMoonPhase(date, completion: { [weak self] (phase) in
+            self?.moonLabel.text = phase.rawValue
             print(phase)
         })
     }

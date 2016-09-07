@@ -9,15 +9,15 @@
 import UIKit
 import CoreLocation
 
-enum MoonPhase {
-    case New
-    case WaxingCrescent
-    case FirstQuarter
-    case WaxingGibbous
-    case Full
-    case WaningGibbous
-    case LastQuarter
-    case WaningCrescent
+enum MoonPhase: String {
+    case New = "New"
+    case WaxingCrescent = "WaxingCrescent"
+    case FirstQuarter = "FirstQuarter"
+    case WaxingGibbous = "WaxingGibbous"
+    case Full = "Full"
+    case WaningGibbous = "WaningGibbous"
+    case LastQuarter = "LastQuarter"
+    case WaningCrescent = "WaningCrescent"
 }
 
 struct LunationNumber {
@@ -97,7 +97,9 @@ class RequestHandler: NSObject {
                 }
 //                print(json)
                 let lunationNumber = LunationNumber(with:moonPhaseNumber)
-                completion(phase:lunationNumber.moonPhase())
+                dispatch_async(dispatch_get_main_queue(), { 
+                    completion(phase:lunationNumber.moonPhase())
+                })
             } catch {
                 
             }
