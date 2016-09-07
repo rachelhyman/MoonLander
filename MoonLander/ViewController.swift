@@ -11,7 +11,8 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     var requestHandler: RequestHandler?
-
+    
+    @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var moonLabel: UILabel!
     
     override func viewDidLoad() {
@@ -28,10 +29,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             requestHandler?.locationManager.startUpdatingLocation()
         }
     }
-
+    
     @IBAction func didTapButton(sender: AnyObject) {
-        requestHandler?.requestMoonPhase(NSDate(), completion: { (phase) in
-            
+        requestMoonPhase(for: datePicker.date)
+    }
+    
+    func requestMoonPhase(for date: NSDate) {
+        requestHandler?.requestMoonPhase(date, completion: { (phase) in
+            print(phase)
         })
     }
     
@@ -44,7 +49,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations.last)
+        //        print(locations.last)
     }
 }
 

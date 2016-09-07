@@ -21,6 +21,10 @@ enum MoonPhase {
 }
 
 struct LunationNumber {
+    init(with moonPhaseNumber: NSNumber) {
+        self.number = moonPhaseNumber.doubleValue
+    }
+    
     var number: Double
     
     func moonPhase() -> MoonPhase {
@@ -56,7 +60,7 @@ class RequestHandler: NSObject {
     let locationManager = CLLocationManager()
     static var dateFormatter: NSDateFormatter {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-DDThh:mm:ss"
+        dateFormatter.dateFormat = "YYYY-MM-dd'T'hh:mm:ss"
         return dateFormatter
     }
     
@@ -75,7 +79,8 @@ class RequestHandler: NSObject {
         }
         guard let loc = locationManager.location else { return }
         let locationString = "\(loc.coordinate.latitude),\(loc.coordinate.longitude)"
-        let urlString = "https://api.forecast.io/forecast/\(key)/\(locationString),2016-08-16T12:00:00"
+        let dateString = RequestHandler.dateFormatter.stringFromDate(forDate)
+        let urlString = "https://api.forecast.io/forecast/\(key)/\(locationString),\(dateString)"
         guard let url = NSURL(string: urlString) else { return }
         
         let session = NSURLSession.sharedSession()
@@ -83,8 +88,16 @@ class RequestHandler: NSObject {
             (optionalData, response, error) -> Void in
             guard let data = optionalData else { return }
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
-                print(json)
+                guard let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as? [String: AnyObject],
+                    let daily = json["daily"] as? [String: AnyObject],
+                    let data = daily["data"] as? [[String: AnyObject]],
+                    let moonPhaseNumber = data[0]["moonPhase"] as? NSNumber else {
+                        assertionFailure("unexpected return type from API")
+                        return
+                }
+//                print(json)
+                let lunationNumber = LunationNumber(with:moonPhaseNumber)
+                completion(phase:lunationNumber.moonPhase())
             } catch {
                 
             }

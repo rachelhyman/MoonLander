@@ -52,6 +52,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="datePicker" destination="F8F-u4-TX4" id="ifC-gj-5Fn"/>
                         <outlet property="moonLabel" destination="4XD-iu-2Yc" id="DfK-w0-CJC"/>
                     </connections>
                 </viewController>
